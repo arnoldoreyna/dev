@@ -533,7 +533,7 @@
         <p><strong class="px-1 sitename">MTI. Arnoldo Reyna Balderas <small> <br/>Desarrollador Fullstack</small></strong></p>
       </div>
       <div class="credits">
-        ├» Todos los derechos reservados <span id="currentYear"></span> - © Copyright «┤
+        ├» <span id="currentYear"></span> Todos los derechos reservados «┤
       </div>
     </div>
 
@@ -557,6 +557,7 @@
   <script src="assets/js/main.js"></script>
 
   <script>
+     document.getElementById('currentYear').textContent = new Date().getFullYear();
     function sendMessage() {
       // Obtén los valores de los campos
       const name = document.getElementById('name').value.trim();
