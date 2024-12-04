@@ -504,29 +504,20 @@
             <form action="" method="" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
               <div class="row gy-4">
                 <div class="col-md-6">
-                  <label for="name-field" class="pb-2">Nombre</label>
-                  <input type="text" name="name" id="name" class="form-control" required="">
+                  <label for="name-field" class="pb-2">Nombre completo</label>
+                  <input type="text" name="name" id="name" class="form-control">
+                  <small id="name-error" class="text-danger"></small>
                 </div>
-
-                <div class="col-md-6">
-                  <label for="email-field" class="pb-2">Correo electrónico</label>
-                  <input type="email" class="form-control" name="email" id="email" required="">
-                </div>
-
-                <div class="col-md-12">
-                  <label for="subject-field" class="pb-2">Asunto</label>
-                  <input type="text" class="form-control" name="subject" id="subject" required="">
-                </div>
-
+            
                 <div class="col-md-12">
                   <label for="message-field" class="pb-2">Mensaje</label>
-                  <textarea class="form-control" name="message" rows="10" id="message" required=""></textarea>
+                  <textarea class="form-control" name="message" rows="10" id="message"></textarea>
+                  <small id="message-error" class="text-danger"></small>
                 </div>
-
+            
                 <div class="col-md-12 text-center">
                   <button type="button" class="btn btn-primary" onclick="sendMessage()"> Enviar Mensaje </button>
                 </div>
-
               </div>
             </form>
           </div>
@@ -566,17 +557,73 @@
   <script src="assets/js/main.js"></script>
 
   <script>
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
     function sendMessage() {
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const message = document.getElementById('message').value;
+      // Obtén los valores de los campos
+      const name = document.getElementById('name').value.trim();
+      const message = document.getElementById('message').value.trim();
+  
+      // Limpia errores previos
+      clearErrors();
+  
+      let isValid = true;
+  
+      // Valida cada campo
+      if (!name) {
+        showError('name', 'Por favor ingresa tu nombre.');
+        isValid = false;
+      }
+  
+      if (!message) {
+        showError('message', 'Por favor ingresa un mensaje.');
+        isValid = false;
+      }
+  
+      // Si no es válido, detén la ejecución
+      if (!isValid) return;
+  
+      // Tu número de WhatsApp
+      const phoneNumber = '4811531126';
+      const url = `https://wa.me/${phoneNumber}?text=Hola%20*Arnoldo%20Reyna%20Balderas*,%20espero%20que%20se%20encuentre%20bien.%0A%0ASoy%20*${name}*%20y%20quisiera%20consultarle%20lo%20siguiente:%0A${message}%0A%0AQuedo%20atento%20a%20su%20respuesta.%20¡Gracias!`;
       
-      const phoneNumber = '4811531126'; // Tu número de WhatsApp
-      const url = `https://wa.me/${phoneNumber}?text=Nombre:%20${name}%0ACorreo:%20${email}%0AMensaje:%20${message}`;
-    
+      // Abre el enlace en una nueva pestaña
       window.open(url, '_blank');
+  
+      // Limpia los campos del formulario
+      clearForm();
     }
-    </script>
+  
+    // Función para mostrar el error
+    function showError(fieldId, message) {
+      const inputField = document.getElementById(fieldId);
+      const errorField = document.getElementById(`${fieldId}-error`);
+      
+      // Agregar borde rojo
+      inputField.classList.add('is-invalid');
+      
+      // Mostrar mensaje de error
+      errorField.textContent = message;
+    }
+  
+    // Función para limpiar errores previos
+    function clearErrors() {
+      const inputs = document.querySelectorAll('.form-control');
+      inputs.forEach(input => input.classList.remove('is-invalid'));
+  
+      const errors = document.querySelectorAll('small.text-danger');
+      errors.forEach(error => error.textContent = '');
+    }
+  
+    // Función para limpiar los campos del formulario
+    function clearForm() {
+      document.getElementById('name').value = '';
+      document.getElementById('message').value = '';
+    }
+  </script>
+  
+  <style>
+    .is-invalid {
+      border: 2px solid red;
+    }
+  </style>
 </body>
 </html>
